@@ -10,7 +10,7 @@
   "author": "Stanimira Vlaeva",
   "license": "Apache 2.0",
   "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.995.0",
+    "@aws-sdk/client-secrets-manager": "^3.1029.0",
     "aws4": "^1.11.0",
     "cors": "^2.8.6",
     "dotenv": "^16.0.0",
