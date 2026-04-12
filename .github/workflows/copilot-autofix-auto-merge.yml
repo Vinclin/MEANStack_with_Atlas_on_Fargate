@@ -1,0 +1,31 @@
+name: Copilot Autofix Auto-Merge
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  autofix-auto-merge:
+    name: Auto-merge Copilot Autofix PRs
+    runs-on: ubuntu-latest
+    # Only run for PRs created by Copilot Autofix
+    if: |
+      github.actor == 'github-advanced-security[bot]' ||
+      github.actor == 'copilot-autofix[bot]'
+
+    steps:
+      - name: Approve Copilot Autofix PR
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge for Copilot Autofix PR
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
