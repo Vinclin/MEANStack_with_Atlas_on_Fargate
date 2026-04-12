@@ -1,0 +1,40 @@
+version: 2
+updates:
+  # Root npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/code/MEANSTACK/partner-meanstack-atlas-fargate"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "security"
+
+  # Client (Angular) npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/code/MEANSTACK/partner-meanstack-atlas-fargate/client"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "security"
+
+  # Server npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/code/MEANSTACK/partner-meanstack-atlas-fargate/server"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "security"
+
+  # GitHub Actions dependencies
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "github-actions"
