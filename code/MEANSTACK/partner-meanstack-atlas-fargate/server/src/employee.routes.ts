@@ -1,9 +1,15 @@
 import * as express from "express";
 import * as mongodb from "mongodb";
+import rateLimit from "express-rate-limit";
 import { collections } from "./database";
 
 export const employeeRouter = express.Router();
 employeeRouter.use(express.json());
+
+const employeeWriteLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+});
 
 employeeRouter.get("/", async (_req, res) => {
     try {
@@ -66,7 +72,7 @@ employeeRouter.put("/:id", async (req, res) => {
     }
 });
 
-employeeRouter.delete("/:id", async (req, res) => {
+employeeRouter.delete("/:id", employeeWriteLimiter, async (req, res) => {
     try {
         const id = req?.params?.id;
         const query = { _id: new mongodb.ObjectId(id) };
