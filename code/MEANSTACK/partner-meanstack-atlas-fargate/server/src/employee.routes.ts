@@ -55,9 +55,24 @@ employeeRouter.post("/", async (req, res) => {
 employeeRouter.put("/:id", async (req, res) => {
     try {
         const id = req?.params?.id;
-        const employee = req.body;
+        const body = req.body;
+
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+            res.status(400).send("Invalid employee payload.");
+            return;
+        }
+
+        const allowedFields = ["name", "position", "level"];
+        const employeeUpdate: Record<string, unknown> = {};
+
+        for (const field of allowedFields) {
+            if (Object.prototype.hasOwnProperty.call(body, field)) {
+                employeeUpdate[field] = body[field];
+            }
+        }
+
         const query = { _id: new mongodb.ObjectId(id) };
-        const result = await collections.employees.updateOne(query, { $set: employee });
+        const result = await collections.employees.updateOne(query, { $set: employeeUpdate });
 
         if (result && result.matchedCount) {
             res.status(200).send(`Updated an employee: ID ${id}.`);
